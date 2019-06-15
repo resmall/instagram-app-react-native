@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import io from 'socket.io-client';
 import { View, Image, TouchableOpacity, StyleSheet, FlatList, Text } from 'react-native';
 
 import api from '../services/api';
@@ -24,12 +24,28 @@ export default class Feed extends Component {
     };
 
     async componentDidMount() {
-        //this.registerToSocket();
+        this.registerToSocket();
 
         const response = await api.get('posts');
         console.log(response)
 
         this.setState({ feed: response.data });
+    }
+
+    registerToSocket = () => {
+        const socket = io('http://172.16.100.8:3333');
+
+        socket.on('post', newPost => {
+            this.setState({ feed: [newPost, ... this.state.feed] });
+        });
+
+        socket.on('like', likedPost => {
+            this.setState({
+                feed: this.state.feed.map((post) =>
+                    post._id === likedPost._id ? likedPost : post
+                )
+            });
+        })
     }
 
     render() {
@@ -62,6 +78,10 @@ export default class Feed extends Component {
                                         <Image source={send} />
                                     </TouchableOpacity>
                                 </View>
+
+                                <Text style={styles.likes}>{item.likes} curtidas</Text>
+                                <Text style={styles.description}>{item.description}</Text>
+                                <Text style={styles.hashtags}>{item.hashtags}</Text>
                             </View>
                         </View>
                     )}
