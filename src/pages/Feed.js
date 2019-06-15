@@ -48,7 +48,7 @@ export default class Feed extends Component {
                                 <Image source={more} />
                             </View>
 
-                            <Image style={styles.feedImage} source={{uri: `http://10.1.1.5:3333/files/${item.image}`}} />
+                            <Image style={styles.feedImage} source={{uri: `http://172.16.100.8:3333/files/${item.image}`}} />
 
                             <View style={styles.feedItemFooter}>
                                 <View style={styles.actions}>
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     },
 
     feedItemHeader: {
-        // paddingHorizontal: 1,
+        paddingHorizontal: 15,
         flexDirection: 'row',
         justifyContent:'space-between',
         alignItems: 'center'
@@ -104,8 +104,8 @@ const styles = StyleSheet.create({
         marginVertical: 15,
     },
 
-    feedItem: {
-        paddingHorizontal: 15
+    feedItemFooter: {
+        paddingHorizontal: 15,
     },
 
     actions: {
